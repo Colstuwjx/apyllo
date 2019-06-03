@@ -15,6 +15,7 @@ def main():
     )
     client = apyllo.client(
         config_server_host="your-apollo-meta-service.com",
+        fallback_to_local=False,
         app_id="apyllo-demo",
         namespaces=["application", "demo.yml"],
     )

@@ -1,6 +1,7 @@
 # coding=utf-8
 
 # defaults
+DEFAULT_FALLBACK_TO_LOCAL = False
 DEFAULT_NAMESPACE = "application"
 DEFAULT_NAMESPACES = [DEFAULT_NAMESPACE]
 DEFAULT_CLUSTER = "default"

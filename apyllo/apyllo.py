@@ -79,6 +79,7 @@ class Apyllo(WebClient, ApolloPollerMixin):
         self, config_server_host, app_id, cluster=DEFAULT_CLUSTER,
         namespaces=DEFAULT_NAMESPACES,
         ip=None,
+        fallback_to_local=DEFAULT_FALLBACK_TO_LOCAL,
         cache_dir=DEFAULT_CACHE_DIR,
         cache_file_name_fmt=DEFAULT_CACHE_FILE_NAME_FMT,
         query_timeout=DEFAULT_QUERY_TIMEOUT,
@@ -94,6 +95,9 @@ class Apyllo(WebClient, ApolloPollerMixin):
 
         self.ip = self._init_ip(ip)
         self.query_timeout = query_timeout
+
+        # whether fallback to local cached files while server is unavailable
+        self.fallback_to_local = fallback_to_local
 
         # set poller
         self.init(
@@ -200,6 +204,12 @@ class Apyllo(WebClient, ApolloPollerMixin):
         except requests.exceptions.Timeout:
             logger.debug("notification watch timeout")
             return []
+        except requests.exceptions.RequestException as e:
+            logger.error("polling notifications with error: {}".format(str(e)))
+            if self.fallback_to_local is True:
+                return []
+            else:
+                raise e
 
         if ret.status_code == 304:
             logger.debug("no change detect from notification watch")
