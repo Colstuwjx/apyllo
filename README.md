@@ -1,5 +1,7 @@
 # apyllo
 
+[中文](https://github.com/Colstuwjx/apyllo/blob/master/README_zh.md)
+
 Another python client for ctrip apollo config center, https://github.com/ctripcorp/apollo
 
 ## Features
